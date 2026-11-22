@@ -42,6 +42,7 @@ SUBSYSTEMS = [
         "description": "RMW Zenoh DDS bridge",
         "cmd": "ros2 run rmw_zenoh_cpp rmw_zenohd",
         "toggles": [],
+        "default_on": True,  # nodes can't find each other without the router
     },
     {
         "id": "foxglove",
@@ -304,7 +305,7 @@ class RobotLauncherApp:
         self.root = root
         self.pm = ProcessManager()
         self._session_log = open_session_log()
-        self.enabled = {s["id"]: tk.BooleanVar(value=False) for s in SUBSYSTEMS}
+        self.enabled = {s["id"]: tk.BooleanVar(value=s.get("default_on", False)) for s in SUBSYSTEMS}
         self.toggle_state = {
             s["id"]: {t["id"]: tk.BooleanVar(value=False) for t in s["toggles"]}
             for s in SUBSYSTEMS

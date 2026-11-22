@@ -1,6 +1,6 @@
 from setuptools import find_packages, setup
 
-package_name = 'leap_sprayer'
+package_name = 'sprayer_health'
 
 setup(
     name=package_name,
@@ -15,7 +15,7 @@ setup(
     zip_safe=True,
     maintainer='Namya',
     maintainer_email='namyalg@gmail.com',
-    description='Handles weed detection and spray control on the Amiga',
+    description='Health/status reporting for the sprayer stack on the Amiga',
     license='Apache-2.0',
     extras_require={
         'test': [
@@ -24,7 +24,7 @@ setup(
     },
     entry_points={
         'console_scripts': [
-            'sprayer_control = leap_sprayer.sprayer_control:main',
+            'sprayer_health = sprayer_health.sprayer_health:main',
         ],
     },
 )

@@ -27,7 +27,7 @@
   <exec_depend>leap_sensors</exec_depend>
   <exec_depend>leap_control</exec_depend>
   <exec_depend>leap_navsat</exec_depend>
-  <exec_depend>leap_sprayer</exec_depend>
+  <exec_depend>sprayer_health</exec_depend>
 
   <export>
     <build_type>ament_python</build_type>

@@ -97,6 +97,13 @@ SUBSYSTEMS = [
         "cmd": "ros2 launch leap_launch amiga_navigation.launch.py",
         "toggles": [],
     },
+    {
+        "id": "sprayer",
+        "label": "SPRAYER",
+        "description": "Amiga sprayer stack",
+        "cmd": "ros2 launch leap_launch amiga_sprayer.launch.py",
+        "toggles": [],
+    },
 ]
 
 # ═══════════════════════════════════════════════════════════

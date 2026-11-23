@@ -103,7 +103,10 @@ SUBSYSTEMS = [
         "label": "SPRAYER",
         "description": "Amiga sprayer stack",
         "cmd": "ros2 launch leap_launch amiga_sprayer.launch.py",
-        "toggles": [],
+        "toggles": [
+            {"id": "camera", "label": "CAMERA", "arg": "camera:=true", "off_arg": "camera:=false"},
+            {"id": "camera_check", "label": "CAMERA CHECK", "arg": "camera_check:=true", "off_arg": "camera_check:=false"},
+        ],
     },
 ]
 

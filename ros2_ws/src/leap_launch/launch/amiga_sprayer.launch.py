@@ -2,11 +2,22 @@ import os
 
 from ament_index_python.packages import get_package_share_directory
 from launch import LaunchDescription
-from launch.substitutions import Command, FindExecutable
+from launch.actions import DeclareLaunchArgument
+from launch.conditions import IfCondition
+from launch.substitutions import Command, FindExecutable, LaunchConfiguration
 from launch_ros.actions import Node
 from launch_ros.parameter_descriptions import ParameterValue
 
 def generate_launch_description():
+    # Feature flags, one per optional sprayer part (panel toggles on the SPRAYER card).
+    # sprayer_health and the sprayer frames always run with SPRAYER.
+    declare_camera = DeclareLaunchArgument(
+        'camera', default_value='false', description='Start the RealSense D435 driver'
+    )
+    declare_camera_check = DeclareLaunchArgument(
+        'camera_check', default_value='false', description='Start the camera_check debug node'
+    )
+
     sprayer_health_node = Node(
         package='sprayer_health',
         executable='sprayer_health',
@@ -56,12 +67,25 @@ def generate_launch_description():
             ('/camera/D435/color/image_raw', '/camera/color/image'),
             ('/camera/D435/aligned_depth_to_color/image_raw', '/camera/depth/image'),
             ('/camera/D435/aligned_depth_to_color/camera_info', '/camera/cam_info'),
-        ]
+        ],
+        condition=IfCondition(LaunchConfiguration('camera'))
+    )
+
+    # Prints camera rates, centre depth and lens numbers every 2 s (debug only)
+    camera_check_node = Node(
+        package='sprayer_camera',
+        executable='camera_check',
+        name='camera_check',
+        output='screen',
+        condition=IfCondition(LaunchConfiguration('camera_check'))
     )
 
     ld = LaunchDescription()
+    ld.add_action(declare_camera)
+    ld.add_action(declare_camera_check)
     ld.add_action(sprayer_health_node)
     ld.add_action(sprayer_state_publisher)
     ld.add_action(realsense_camera)
+    ld.add_action(camera_check_node)
 
     return ld

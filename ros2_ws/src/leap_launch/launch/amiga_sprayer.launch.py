@@ -34,8 +34,34 @@ def generate_launch_description():
         remappings=[('robot_description', '/sprayer/robot_description')]
     )
 
+    # RealSense D435 (Intel's driver), settings from LEAP_sprayer bringup's
+    # realsense_config.yaml. publish_tf off: the sprayer URDF already publishes the
+    # D435_* frames. Remapped to the topic names the sprayer pipeline reads.
+    realsense_camera = Node(
+        package='realsense2_camera',
+        executable='realsense2_camera_node',
+        namespace='camera',
+        name='D435',
+        output='screen',
+        parameters=[{
+            'enable_sync': True,
+            'align_depth.enable': True,
+            'enable_color': True,
+            'enable_depth': True,
+            'rgb_camera.enable_auto_white_balance': False,
+            'rgb_camera.white_balance': 3500.0,
+            'publish_tf': False,
+        }],
+        remappings=[
+            ('/camera/D435/color/image_raw', '/camera/color/image'),
+            ('/camera/D435/aligned_depth_to_color/image_raw', '/camera/depth/image'),
+            ('/camera/D435/aligned_depth_to_color/camera_info', '/camera/cam_info'),
+        ]
+    )
+
     ld = LaunchDescription()
     ld.add_action(sprayer_health_node)
     ld.add_action(sprayer_state_publisher)
+    ld.add_action(realsense_camera)
 
     return ld

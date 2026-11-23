@@ -55,6 +55,7 @@ def generate_launch_description():
         name='D435',
         output='screen',
         parameters=[{
+            'camera_name': 'D435',  # frame names D435_*, matching the sprayer URDF
             'enable_sync': True,
             'align_depth.enable': True,
             'enable_color': True,
